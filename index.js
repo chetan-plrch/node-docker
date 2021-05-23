@@ -6,6 +6,7 @@ const authRouter = require('./routes/authRoutes');
 const mongoURL = `mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_IP}:${MONGO_PORT}/?authSource=admin`
 const redis = require('redis')
 const session = require('express-session')
+const cors = require('cors')
 const { protect } = require('./middleware/authMiddleware')
 
 let RedisStore = require('connect-redis')(session)
@@ -31,7 +32,10 @@ retryConnection();
 
 const app = express();
 
+app.enable("trust proxy");
+app.use(cors())
 app.use(express.json());
+
 app.use(
     session({
         store: new RedisStore({ client: redisClient }),
@@ -47,6 +51,7 @@ app.use(
 )
 
 app.get('/api', (req, res) => {
+    console.log("yes it works")
     return res.json({ "status": "This is also success message good" })
 })
 
