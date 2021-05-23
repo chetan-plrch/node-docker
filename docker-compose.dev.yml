@@ -1,5 +1,8 @@
 version: "3"
 services:
+    nginx:
+        ports:
+            - "3000:80"
     node-app:
         build:
             context: .
@@ -7,7 +10,18 @@ services:
                 NODE_ENV: development
         volumes:
             - ./:/app
-            - /app/node_modules
         environment:
             - NODE_ENV=development
+            - MONGO_USERNAME=chetan
+            - MONGO_PASSWORD=chetan
+            - MONGO_IP=database
+            - MONGO_PORT=27017
+            - REDIS_IP=redis
+            - REDIS_PORT=6379
+            - REDIS_SESSION_SECRET=my_secret
         command: npm run start
+    database:
+        image: mongo
+        environment:
+            - MONGO_INITDB_ROOT_USERNAME=chetan
+            - MONGO_INITDB_ROOT_PASSWORD=chetan
