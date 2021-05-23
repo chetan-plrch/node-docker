@@ -9,6 +9,20 @@ services:
             context: .
             args:
                 NODE_ENV: production
+        volumes:
+            - ./:/app
         environment:
             - NODE_ENV=production
-        command: node index.js
+            - MONGO_USERNAME=chetan
+            - MONGO_PASSWORD=chetan
+            - MONGO_IP=database
+            - MONGO_PORT=27017
+            - REDIS_IP=redis
+            - REDIS_PORT=6379
+            - REDIS_SESSION_SECRET=my_secret
+        command: npm run start
+    database:
+        image: mongo
+        environment:
+            - MONGO_INITDB_ROOT_USERNAME=chetan
+            - MONGO_INITDB_ROOT_PASSWORD=chetan
